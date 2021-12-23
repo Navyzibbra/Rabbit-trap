@@ -2,7 +2,6 @@ const Display = function (canvas) {
   (this.buffer = document.createElement("canvas").getContext("2d")),
     (this.context = canvas.getContext("2d"));
 
-  /* This function draws the map to the buffer. */
   this.drawMap = function (image, image_columns, map, map_columns, tile_size) {
     for (let index = map.length - 1; index > -1; --index) {
       let value = map[index];

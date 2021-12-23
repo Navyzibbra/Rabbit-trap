@@ -1,5 +1,9 @@
 window.addEventListener("load", function (event) {
   "use strict";
+
+  const ZONE_PREFIX = "rabbit-trap/levels/zone";
+  const ZONE_SUFFIX = ".json";
+
   const AssetsManager = function () {
     this.tile_set_image = undefined;
   };
@@ -7,18 +11,33 @@ window.addEventListener("load", function (event) {
   AssetsManager.prototype = {
     constructor: Game.AssetsManager,
 
-    loadTileSetImage: function (url, callback) {
-      this.tile_set_image = new Image();
+    requestJSON: function (url, callback) {
+      let request = new XMLHttpRequest();
 
-      this.tile_set_image.addEventListener(
+      request.addEventListener(
         "load",
         function (event) {
-          callback();
+          callback(JSON.parse(this.responseText));
         },
         { once: true }
       );
 
-      this.tile_set_image.src = url;
+      request.open("GET", url);
+      request.send();
+    },
+
+    requestImage: function (url, callback) {
+      let image = new Image();
+
+      image.addEventListener(
+        "load",
+        function (event) {
+          callback(image);
+        },
+        { once: true }
+      );
+
+      image.src = url;
     },
   };
 
@@ -39,7 +58,7 @@ window.addEventListener("load", function (event) {
     display.drawMap(
       assets_manager.tile_set_image,
       game.world.tile_set.columns,
-      game.world.map,
+      game.world.graphical_map,
       game.world.columns,
       game.world.tile_set.tile_size
     );
@@ -74,6 +93,21 @@ window.addEventListener("load", function (event) {
     }
 
     game.update();
+
+    if (game.world.door) {
+      engine.stop();
+
+      assets_manager.requestJSON(
+        ZONE_PREFIX + game.world.door.destination_zone + ZONE_SUFFIX,
+        (zone) => {
+          game.world.setup(zone);
+
+          engine.start();
+        }
+      );
+
+      return;
+    }
   };
 
   var assets_manager = new AssetsManager();
@@ -86,10 +120,19 @@ window.addEventListener("load", function (event) {
   display.buffer.canvas.width = game.world.width;
   display.buffer.imageSmoothingEnabled = false;
 
-  assets_manager.loadTileSetImage("rabbit-trap/png/rabbit-trap.png", () => {
-    resize();
-    engine.start();
-  });
+  assets_manager.requestJSON(
+    ZONE_PREFIX + game.world.zone_id + ZONE_SUFFIX,
+    (zone) => {
+      game.world.setup(zone);
+
+      assets_manager.requestImage("/png/rabbit-trap.png", (image) => {
+        assets_manager.tile_set_image = image;
+
+        resize();
+        engine.start();
+      });
+    }
+  );
 
   window.addEventListener("keydown", keyDownUp);
   window.addEventListener("keyup", keyDownUp);
