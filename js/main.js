@@ -125,7 +125,7 @@ window.addEventListener("load", function (event) {
     (zone) => {
       game.world.setup(zone);
 
-      assets_manager.requestImage("/png/rabbit-trap.png", (image) => {
+      assets_manager.requestImage("png/rabbit-trap.png", (image) => {
         assets_manager.tile_set_image = image;
 
         resize();
