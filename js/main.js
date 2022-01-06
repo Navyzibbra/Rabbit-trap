@@ -1,6 +1,6 @@
 window.addEventListener('load', function (event) {
   'use strict';
-  const ZONE_PREFIX = '/rabbit-trap/levels/zone';
+  const ZONE_PREFIX = 'levels/zone';
   const ZONE_SUFFIX = '.json';
 
   const AssetsManager = function () {
@@ -175,15 +175,12 @@ window.addEventListener('load', function (event) {
     (zone) => {
       game.world.setup(zone);
 
-      assets_manager.requestImage(
-        '/rabbit-trap/png/rabbit-trap.png',
-        (image) => {
-          assets_manager.tile_set_image = image;
+      assets_manager.requestImage('png/rabbit-trap.png', (image) => {
+        assets_manager.tile_set_image = image;
 
-          resize();
-          engine.start();
-        }
-      );
+        resize();
+        engine.start();
+      });
     }
   );
 
