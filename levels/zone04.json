@@ -3,9 +3,12 @@
   "doors" : [
 
     { "x":-16, "y":80, "width":16, "height":64,
-      "destination_zone":"03", "destination_x":192, "destination_y":-1 }
+      "destination_zone":"04", "destination_x":192, "destination_y":-1 }
 
   ],
+
+  "carrots":[],
+  "grass"  :[[2, 7], [3, 7], [5, 7], [7, 7]],
 
   "columns":12,
   "rows"   :9,
