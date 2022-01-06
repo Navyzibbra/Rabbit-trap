@@ -10,7 +10,7 @@ html {
 }
 
 body {
-
+  font-family: monospace;
   align-content: center;
   align-items: space-around;
   background-color: #202830;
