@@ -1,1 +1,2 @@
-# Rabbit-trap
+# RABBIT-TRAP
+# A Platformer
